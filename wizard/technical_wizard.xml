@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="technical_order_wizard_view_form" model="ir.ui.view">
+        <field name="name">technical.order.wizard.view.form</field>
+        <field name="model">technical.order.wizard</field>
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <group>
+                        <field name="rejection_reason" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_submit" string="Submit" type="object"
+                        class="btn-primary" data-hotkey="v" />
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="technical_order_wizard_action" model="ir.actions.act_window">
+        <field name="name">Technical Wizard</field>
+        <field name="res_model">technical.order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="context">{default_technical_order_id : active_id}</field>
+    </record>
+
+</odoo>

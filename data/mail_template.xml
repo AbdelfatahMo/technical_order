@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="email_technical_order_manager_appprove" model="mail.template">
+        <field name="name">Technical order manager appprove - Send by Email</field>
+        <field name="email_from">{{object.request_by.mail}}</field>
+        <field name="subject">Approve Technical Order - {{object.sequence}}</field>
+        <field name="email_to">{{object.employee_id.work_email}}</field>
+        <field name="model_id" ref="technical_order.model_technical_order"/>
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html"><![CDATA[
+        <p>Dear <!-- ${object.employee_id.name} --><t t-out="object.employee_id.name" />,</p><br/>
+        <p>This mail is to inform you that we wait your approvement on <t t-out="object.sequence" />.</p> <br/>
+        <p>Do not hesitate to contact us if you have any questions.</p>
+        <!--  <p>Thank You,</p>
+        ]]></field>
+    </record>
+
+</odoo>

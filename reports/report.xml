@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_technical_order" model="ir.actions.report">
+        <field name="name">Technical Report</field>
+        <field name="model">technical.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">technical_order.report_technical_order</field>
+        <field name="report_file">technical_order.report_technical_order</field>
+        <field name="print_report_name">'%s' % object.sequence</field>
+        <field name="binding_model_id" ref="model_technical_order" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_technical_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center h3">
+                            <span>Request Name</span>
+                            <br/>
+                            <span t-field="o.request_name" />(<span t-field="o.sequence" />)
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-6 text-start">
+                                <span>Requested By:&#160;</span><span t-field="o.request_by.name" />
+                                <br/>
+                                <span>Customer:&#160;</span><span t-field="o.customer.name" />
+                            </div>
+                            <div class="col-6 text-start">
+                                <span>Start date:&#160;</span><span t-field="o.start_date" />
+                                <br/>
+                                <span>End date:&#160;</span><span t-field="o.end_date" />
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <div class="row">
+                            <table class="table table-striped">
+                                <thead class="text-start">
+                                    <tr>
+                                        <th>
+                                            no
+                                        </th>
+                                        <th>
+                                            Product
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Price
+                                        </th>
+                                        <th>
+                                            Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbady class="text-start">
+                                    <t t-set="variable" t-value="0" />
+                                    <t t-foreach="o.technical_order_line_ids" t-as="line">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="variable" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.product_id.name" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.description" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.quantity" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.price" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.total" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbady>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-9"></div> 
+                            <div class="col-3 oe_subtotal_footer oe_right">
+                                <hr/>
+                                <span>Total &#160;<span t-field="o.total_price"/></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

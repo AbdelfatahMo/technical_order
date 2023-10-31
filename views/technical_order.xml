@@ -1,0 +1,113 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="technical_order.list">
+      <field name="name">technical_order list</field>
+      <field name="model">technical.order</field>
+      <field name="arch" type="xml">
+        <tree string="Orders">
+          <field name="sequence" />
+          <field name="request_name" />
+          <field name="request_by" widget="many2one_avatar_user" />
+          <field name="customer" widget="many2one_avatar" />
+          <field name="start_date" />
+          <field name="end_date" />
+          <field name="status" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="technical_order_view_form" model="ir.ui.view">
+      <field name="name">technical.order.view.form</field>
+      <field name="model">technical.order</field>
+      <field name="arch" type="xml">
+        <form string="Order" >
+            <header>
+              <button string="Cancel" name="action_cancel" type="object" class="oe_highlight" attrs="{'invisible':[('status','!=','draft')]}"/>
+              <button string="Submit for Approval" name="action_submit_for_approve" type="object" class="oe_highlight" attrs="{'invisible':[('status','!=','draft')]}"/>
+              <button string="Approve" name="action_approve" type="object" class="oe_highlight" attrs="{'invisible':[('status','!=','to_be_approved')]}"/>
+              <button string="Create SO" name="action_create_os" type="object" class="oe_highlight" attrs="{'invisible':[('status','!=','approve')]}"/>
+              <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':[('status','not in',('draft','to_be_approved'))]}"/>
+              <button string="Reset to draft" name="action_reset_to_draft" type="object" class="oe_highlight" attrs="{'invisible':[('status','in',('draft','approve'))]}" />
+              <field name="status" widget="statusbar"/>
+            </header>
+          <sheet>
+              <div class="oe_button_box" name="button_box">
+                <button name="view_sale_order" type="object"
+                  class="oe_stat_button" icon="fa-th-list">
+                  <field name="sales_order_count" string="Sales Orders" widget="statinfo" />
+                </button>
+              </div>
+              
+              <div class="oe_title">
+                <h1>
+                  <field name="sequence" readonly="1" />
+                </h1>
+              </div>
+            <group>
+              <group>
+                <field name="request_name" attrs="{'readonly':[('status','in',('approve','reject','cancel'))]}" />
+                <field name="request_by" widget="many2one_avatar_user" attrs="{'readonly':[('status','in',('approve','reject','cancel'))]}" />
+                <field name="customer" widget="many2one_avatar" attrs="{'readonly':[('status','in',('approve','reject','cancel'))]}" />
+              </group>
+              <group>
+                <field name="start_date" attrs="{'readonly':[('status','in',('approve','reject','cancel'))]}" />
+                <field name="end_date" attrs="{'readonly':[('status','in',('approve','reject','cancel'))]}" />
+              </group>
+              <group>
+                <field name="rejection_reason" readonly="1" attrs="{'invisible':[('status','!=','reject')]}" />
+              </group>
+            </group>
+            <notebook>
+              <page name="technical_order_line" string="Technical Orders">
+                <field name="technical_order_line_ids"  attrs="{'readonly':[('status','in',('approve','reject','cancel'))]}">
+                  <tree editable="top">
+                    <field name="product_id" />
+                    <field name="description"/>
+                    <field name="quantity"/>
+                    <field name="price" />
+                    <field name="total" />
+                  </tree>
+                </field>
+                <group name="note_group" col="6" class="mt-2 mt-md-0">
+                  <group class="oe_subtotal_footer oe_right" colspan="2" name="technical_total">
+                    <field name="total_price" nolabel="1" colspan="2" readonly="1" />
+                  </group>
+                  <div class="clearfix" />
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="technical_order_action_window">
+      <field name="name">technical order window</field>
+      <field name="res_model">technical.order</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="technical_order" id="technical_order.menu_root"/>
+-->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="technical_order.menu_1" parent="technical_order.menu_root"/>
+    <menuitem name="Menu 2" id="technical_order.menu_2" parent="technical_order.menu_root"/>
+-->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="technical_order.menu_1_list" parent="technical_order.menu_1"
+              action="technical_order.action_window"/>
+    <menuitem name="Server to list" id="technical_order" parent="technical_order.menu_2"
+              action="technical_order.action_server"/>
+-->
+  </data>
+</odoo>
